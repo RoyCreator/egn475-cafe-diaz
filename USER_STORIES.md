@@ -92,7 +92,7 @@ As a kitchen staff member, I want to see incoming orders so that I know what to 
 
 ## US-07 — Kitchen staff — Must
 
-As a kitchen staff member, I want to advance an order's status so that customers can follow its progress.
+As a kitchen staff member, I want to start preparing a received order so that the kitchen can track work in progress.
 
 **Acceptance criterion 1 — normal case**
 - **Given** an order is received and I am authorized staff,
@@ -103,6 +103,20 @@ As a kitchen staff member, I want to advance an order's status so that customers
 - **Given** an order is already picked up,
 - **When** I attempt to move it back to preparing,
 - **Then** the system rejects the invalid status change.
+
+## US-10 — Kitchen staff — Must
+
+As a kitchen staff member, I want to mark a prepared order as ready so that the customer knows it can be picked up.
+
+**Acceptance criterion 1 — normal case**
+- **Given** an order is preparing and I am authorized kitchen staff,
+- **When** I mark the order ready,
+- **Then** the status becomes ready and is visible to the customer.
+
+**Acceptance criterion 2 — edge case**
+- **Given** an order is still received and has not started preparation,
+- **When** I try to mark it ready,
+- **Then** the system rejects the change and keeps its existing status.
 
 ## US-08 — Customer — Should
 
@@ -132,8 +146,29 @@ As an authorized café manager, I want to update a menu item's availability so t
 - **When** I attempt to change item availability,
 - **Then** the change is rejected and the menu remains unchanged.
 
-## Copilot INVEST review
+## Copilot INVEST review and decisions
 
-**Review prompt:** Here are my user stories for a Flask prototype. Check each one against INVEST and tell me which are too big, vague or not testable. Do not rewrite them; list problems only.
+**First prompt:** "Here are my user stories for a Flask prototype. Check each one against INVEST and tell me which are too big, vague or not testable. Do not rewrite them; list problems only."
 
-**Review results and decisions:** Pending the student's actual Copilot Chat review. Do not invent review feedback.
+**Follow-up prompt:** "Please review the complete USER_STORIES.md file, including US-01 through US-09. US-01 already specifies an empty-menu message, so check that criterion again. Review every story against INVEST. Identify only specific problems, including missing edge cases or stories that should be split. Do not rewrite the stories."
+
+| Copilot flag | Decision | Reason |
+| --- | --- | --- |
+| US-01 has no empty-menu behavior | Rejected | US-01 already says to display a message when no items are available. |
+| US-02 needs empty-submission handling | Rejected as misplaced | US-02 is item selection; US-03 already handles empty submissions. |
+| US-03 includes payments and needs splitting | Rejected | US-03 does not process payments; payment is out of scope. |
+| US-04 needs sold-out-item handling | Partly accepted, assigned to US-03 | Submission must reject sold-out items, not silently confirm them. |
+| US-05 needs pickup-time estimation | Rejected | The story concerns status, not estimated pickup times. |
+| US-06 needs failed SMS/email handling | Rejected | The kitchen board does not send notifications. |
+| US-07 concerns registration/login | Rejected | US-07 concerns kitchen status changes, not accounts. |
+| US-08 needs failed-login handling | Rejected | The story concerns order history, not login. |
+| US-09 concerns analytics | Rejected | The story concerns menu availability, not analytics. |
+
+**Additional independent improvement:** Split the original US-07 status progression into smaller stories: US-07 starts preparation and US-10 marks an order ready. Each now describes one distinct staff action and has two testable acceptance criteria.
+
+**Additional acceptance check for US-03 (sold-out item):**
+- **Given** my order contains an item that has become sold out,
+- **When** I submit the order,
+- **Then** the system rejects submission and identifies the unavailable item.
+
+This third check supplements the two required criteria and addresses a useful part of Copilot's US-04 feedback.
