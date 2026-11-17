@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block title %}New Order | Café Calle Ocho{% endblock %}
+
+{% block content %}
+<h1>Place a Pickup Order</h1>
+<p>Select an item and enter your pickup details.</p>
+
+<form>
+    <label for="customer">Customer Name</label>
+    <input type="text" id="customer" placeholder="Your name">
+
+    <label for="item">Menu Item</label>
+    <select id="item">
+        {% for item in items %}
+        <option value="{{ item.id }}">
+            {{ item.name }} — ${{ "%.2f"|format(item.price_cents / 100) }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="pickup">Pickup Time</label>
+    <input type="time" id="pickup">
+
+    <button type="button">Preview Order (Demo)</button>
+</form>
+
+<p><small>This is a prototype. Orders are not saved yet.</small></p>
+{% endblock %}
