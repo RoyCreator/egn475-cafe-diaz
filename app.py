@@ -58,11 +58,6 @@ def orders():
     return render_template("orders.html", orders=SAMPLE_ORDERS)
 
 
-if __name__ == "__main__":
-
-    # This starts my Flask application with debug mode enabled.
-    app.run(debug=True)
-
 SAMPLE_ITEMS = [
     {"id": 1, "name": "Café con Leche", "category": "Coffee", "price_cents": 350},
     {"id": 2, "name": "Cortadito", "category": "Coffee", "price_cents": 275},
@@ -83,3 +78,9 @@ SAMPLE_ORDERS = [
     {"id": 96, "customer": "Carlos", "total_cents": 950, "status": "Completed"},
     {"id": 97, "customer": "Ana", "total_cents": 600, "status": "Completed"},
 ]
+
+if __name__ == "__main__":
+
+    # This starts my Flask application with debug mode enabled.
+    app.run(debug=True)
+
