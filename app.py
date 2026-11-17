@@ -1,6 +1,6 @@
 
 # I import Flask so I can create my web application.
-from flask import Flask
+from flask import Flask, render_template
 
 # I create my Flask application using this Python file.
 app = Flask(__name__)
@@ -10,9 +10,7 @@ app = Flask(__name__)
 
 # This function runs when someone visits the homepage.
 def home():
-
-    # This sends a welcome message to the visitor.
-    return "Welcome to Bewy Café"
+    return render_template("index.html")
 
 # This route connects the /about URL to my about function.
 @app.route("/about")
